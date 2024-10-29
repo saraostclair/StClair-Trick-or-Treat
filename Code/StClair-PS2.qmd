@@ -1,0 +1,130 @@
+---
+title: "StClair-PS2"
+format: html
+---
+
+```{r}
+rm(list=ls())
+library(here)
+library(tidyverse)
+```
+
+```{r}
+halloween<- read.csv(here("Data","Halloween_data_PS2.csv"))
+```
+
+
+```{r}
+glimpse(halloween)
+summary(halloween)
+```
+
+```{r}
+#does costume need to be a factor?
+halloween$Costume_type<- as.factor(halloween$Costume_type)
+halloween$sugar_high<- as.factor(halloween$sugar_high)
+```
+
+```{r}
+levels(halloween$sugar_high)
+levels(halloween$Costume_type)
+# what to do for this there are different witches 
+```
+
+```{r}
+fix1 <-which(halloween$sugar_high %in% c("no", "No", "NO"))
+# indentified rows needing repair
+
+halloween$sugar_high[fix1] <-"No"
+
+halloween$sugar_high <- factor(halloween$sugar_high) #tells R to re-list the levels of my factor now that they have changes
+levels(halloween$sugar_high)
+```
+
+```{r}
+fix2 <-which(halloween$sugar_high %in% c("yes", "Yes"))
+# indentified rows needing repair
+
+halloween$sugar_high[fix2] <-"Yes"
+
+halloween$sugar_high <- factor(halloween$sugar_high) #tells R to re-list the levels of my factor now that they have changes
+levels(halloween$sugar_high)
+```
+
+```{r}
+fix3 <-which(halloween$Costume_type %in% c("scaly", "scary", "Scary", "scary "))
+# indentified rows needing repair
+
+halloween$Costume_type[fix3] <-"Scary"
+
+halloween$Costume_type <- factor(halloween$Costume_type) #tells R to re-list the levels of my factor now that they have changes
+levels(halloween$Costume_type)
+```
+
+
+```{r}
+fix4 <-which(halloween$Costume_type %in% c("not scary", "Not scary", "notscary"))
+# indentified rows needing repair
+
+halloween$Costume_type[fix4] <-"Not scary"
+
+halloween$Costume_type <- factor(halloween$Costume_type) #tells R to re-list the levels of my factor now that they have changes
+levels(halloween$Costume_type)
+#gets rid of Not Scary and I don't know why
+```
+
+#### need help
+```{r}
+#do i need to fix costume names 
+halloween$costume <- as.character(halloween$costume)
+
+halloween$costume[halloween$costume == "Princess"] <- "princess"
+halloween$costume[halloween$costume == "Mermaid"] <- "mermaid"
+halloween$costume[halloween$costume == "Rabbit"] <- "rabbit"
+halloween$costume[halloween$costume == "Unicorn"] <- "unicorn"
+halloween$costume[halloween$costume == "Zombie"] <- "zombie"
+halloween$costume[halloween$costume == "Sponge Bob"] <- "spongebob"
+halloween$costume[halloween$costume == "Witch" | halloween$costume == "witch "] <- "witch"
+halloween$costume[halloween$costume == "Ernie"] <- "ernie"
+halloween$costume[halloween$costume == "Dracula"] <- "dracula"
+
+halloween$costume <- factor(halloween$costume)
+
+levels(halloween$costume)
+```
+
+
+#### need help
+```{r}
+#shows two different costume types
+ggplot(halloween, aes(x=age, y=min_temp_trick_treat_C, shape = Costume_type, colour = Costume_type)) +
+  geom_point(size=4)+
+  scale_shape_manual(values = c("Not Scary" = 16, "Scary" = 17, "Uncertain" = 15))+
+  labs(  x = "Age of trick-or-treaters (years)",  y = "Minimum temperature while out (C)", caption  = "Figure 1: Minimum temperature that kids will trick-or-treat before going home as a function of each child's age and costume type.")
+```
+
+```{r}
+fig2<-halloween |>  filter(age >= 10 & g_candy_consumed >= 100)
+
+ggplot(fig2, aes(x=candy_pieces))+
+  geom_histogram()+
+  labs(x="Number of candy pieces eaten", y="Count", caption = "Figure 2. Count of number of children (age 10 and older and who consumed at least 100 grams of candy) eating different numbers of pieces of candy.")
+```
+
+```{r}
+halloween |> group_by(sugar_high) |>
+  summarise(mean_age = mean(age),
+            sd_age = sd(age),
+            mean_candy = mean(g_candy_consumed),
+            sd_candy = sd(g_candy_consumed))
+```
+
+
+```{r}
+ggplot(halloween, aes(x = Costume_type, y = g_candy_consumed)) +
+  geom_boxplot(outlier.shape = 21, outlier.fill = "orange", outlier.color = "orange", outlier.size = 2.5) +  
+  geom_jitter(color = "orange", shape = 21, size = 2.5, fill = "orange", width = 0) +  
+  facet_wrap(~ sugar_high) +
+  labs(X="Costume Type", y= "Amount of candy consumed (g)", caption = "Figure 3. Box and whisker plot showing amount of candy consumed by shildren wearing different types of Halloween costume seprated according to whether the child experienced a resulting sugar high (no vs. yes).")
+```
+

@@ -1,0 +1,29 @@
+---
+title: "ps2-feedback"
+format: html
+editor: visual
+---
+
+## PS2 Feedback
+
+I'd like you to work on adding more commentary to your .qmd files outside of code chunks, and especially as interpretation after you execute a code chunk. Imagine that you return to this project in a year - you should know WHY you were making the decisions you made. So, for example, after lines 18/19, it would be good to record what you learn from running `glimpse()` and `summary()`. Also, on line 23, when you pose a question, it should fall outside of the code chunk. Use comments within code chunks to specify information about HOW the code runs.
+
+Also, please update your code before you submit assigments so that it all makes sense. On line 31 you ask what to do for this there are different witches, but your code in that chunk is not for the `costume` variable that had different witches.
+
+I like that after you fixed your factor variables you re-ran `levels()` to ensure that your fix actually worked.
+
+One line 73 you make a comment that is not relevant to the code as I run it.
+
+I thought that via teams you had messaged me about costume as a factor. I see that you went ahead and fixed it - but I'd like you to think about why. It is almost never going to make sense to have a factor with 41 levels when you only have 49 rows of data.
+
+You neglected to do any error checking on any of the numeric variables.
+
+For figure 1, take a look at the key and see if you can see why in your version costume-type shows up twice in the legend. Hint: look at your line 102.
+
+Figure 2 looks good - nice work determining how to make a figure caption, though that wasn't required.
+
+At line 119 if you add \`\|\> View()\` it will open in a new tab which is what was asked of you.
+
+Fig 3 looks good but notice that your facet levels are capitalized and mine are not, which is a subtle detail about factor levels.
+
+Overall though nice work!
